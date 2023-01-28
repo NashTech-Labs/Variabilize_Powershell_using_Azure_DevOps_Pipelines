@@ -1,0 +1,19 @@
+trigger:
+- master
+
+stages:
+  - stage: Build
+    pool:
+      name: Local
+      demands:
+        - agent.name -equals VM1    
+      vmImage: 'windows-latest'
+    jobs:
+    - job: Build
+      displayName: 'Powershell Script Execute'
+      steps:
+        - task: PowerShell@2
+          displayName: 'Run Powershell Build'
+          inputs:
+            targetType: 'inline'
+            script: '.\azureoperationsscript.ps1 -OrganizationUrl $(OrganizationUrl) -PAT $(PAT)'
